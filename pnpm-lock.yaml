@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      '@preact/signals-react':
+        specifier: ^3.3.1
+        version: 3.3.1(react@19.2.0)
       '@tailwindcss/vite':
         specifier: ^4.1.14
         version: 4.1.14(rolldown-vite@7.1.14(@types/node@24.8.1)(jiti@2.6.1))
@@ -29,6 +32,12 @@ importers:
       tailwindcss:
         specifier: ^4.1.14
         version: 4.1.14
+      three:
+        specifier: ^0.180.0
+        version: 0.180.0
+      three.quarks:
+        specifier: ^0.16.0
+        version: 0.16.0(three@0.180.0)
     devDependencies:
       '@eslint/js':
         specifier: ^9.36.0
@@ -259,6 +268,14 @@ packages:
 
   '@oxc-project/types@0.93.0':
     resolution: {integrity: sha512-yNtwmWZIBtJsMr5TEfoZFDxIWV6OdScOpza/f5YxbqUMJk+j6QX3Cf3jgZShGEFYWQJ5j9mJ6jM0tZHu2J9Yrg==}
+
+  '@preact/signals-core@1.12.1':
+    resolution: {integrity: sha512-BwbTXpj+9QutoZLQvbttRg5x3l5468qaV2kufh+51yha1c53ep5dY4kTuZR35+3pAZxpfQerGJiQqg34ZNZ6uA==}
+
+  '@preact/signals-react@3.3.1':
+    resolution: {integrity: sha512-VMVDVt2zxtv/uvYBfuaAX1KJPZjpSB23ohbbCAzWAv0J0IXRxyDMSVUirxq1nY6nzeyldAAXJOykAtlVIyQ/jA==}
+    peerDependencies:
+      react: ^16.14.0 || 17.x || 18.x || 19.x
 
   '@rolldown/binding-android-arm64@1.0.0-beta.41':
     resolution: {integrity: sha512-Edflndd9lU7JVhVIvJlZhdCj5DkhYDJPIRn4Dx0RUdfc8asP9xHOI5gMd8MesDDx+BJpdIT/uAmVTearteU/mQ==}
@@ -1091,6 +1108,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  quarks.core@0.16.0:
+    resolution: {integrity: sha512-F46WeRCmv+HJaFvSOurfTbnR9Ri9SbqyiWKFVplmVmMU+2njI9YZ6oKkflZfwWAFTbHbbReL6LSXj248oNFC7w==}
+
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -1206,6 +1226,14 @@ packages:
     resolution: {integrity: sha512-nlGpxf+hv0v7GkWBK2V9spgactGOp0qvfWRxUMjqHyzrt3SgwE48DIv/FhqPHJYLHpgW1opq3nERbz5Anq7n1g==}
     engines: {node: '>=18'}
 
+  three.quarks@0.16.0:
+    resolution: {integrity: sha512-j9hDNjTUurbrZltd/XXAw+6SEyQl2uYmNfhRnFkUXEGcqMJoJAfJSDKzIW1GrLljUkAzYK9MIBn53RSyaW1XWQ==}
+    peerDependencies:
+      three: '>=0.165.0'
+
+  three@0.180.0:
+    resolution: {integrity: sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w==}
+
   tinyglobby@0.2.15:
     resolution: {integrity: sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==}
     engines: {node: '>=12.0.0'}
@@ -1250,6 +1278,11 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  use-sync-external-store@1.6.0:
+    resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -1503,6 +1536,14 @@ snapshots:
   '@oxc-project/runtime@0.92.0': {}
 
   '@oxc-project/types@0.93.0': {}
+
+  '@preact/signals-core@1.12.1': {}
+
+  '@preact/signals-react@3.3.1(react@19.2.0)':
+    dependencies:
+      '@preact/signals-core': 1.12.1
+      react: 19.2.0
+      use-sync-external-store: 1.6.0(react@19.2.0)
 
   '@rolldown/binding-android-arm64@1.0.0-beta.41':
     optional: true
@@ -2241,6 +2282,8 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  quarks.core@0.16.0: {}
+
   queue-microtask@1.2.3: {}
 
   react-dom@19.2.0(react@19.2.0):
@@ -2327,6 +2370,13 @@ snapshots:
       minizlib: 3.1.0
       yallist: 5.0.0
 
+  three.quarks@0.16.0(three@0.180.0):
+    dependencies:
+      quarks.core: 0.16.0
+      three: 0.180.0
+
+  three@0.180.0: {}
+
   tinyglobby@0.2.15:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.3)
@@ -2371,6 +2421,10 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  use-sync-external-store@1.6.0(react@19.2.0):
+    dependencies:
+      react: 19.2.0
 
   which@2.0.2:
     dependencies:
