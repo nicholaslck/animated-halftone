@@ -1,5 +1,8 @@
 // import { useState } from "react";
+
 import "./App.css";
+
+import ControlPanel from "./components/ControlPanel";
 
 function App() {
   return (
@@ -8,7 +11,7 @@ function App() {
       <div></div>
 
       {/*Control*/}
-      <div></div>
+      <ControlPanel />
     </>
   );
 }
