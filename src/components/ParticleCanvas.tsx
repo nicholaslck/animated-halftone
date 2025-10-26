@@ -3,7 +3,7 @@ import { useMemo, useRef } from "react";
 import { imageData } from "../signals/data";
 import { imageData2Points } from "../utils/image";
 import { computed } from "@preact/signals-react";
-import { useSignals } from "@preact/signals-react/runtime";
+import { useComputed, useSignals } from "@preact/signals-react/runtime";
 
 const particlePositions = computed(() => {
   if (imageData.value) {
@@ -23,35 +23,52 @@ const particlePositions = computed(() => {
   }
 });
 
+const particlesCount = computed(() => particlePositions.value.length / 3);
+
 function Renderer() {
   const pointsRef = useRef<any>(null);
 
-  // useFrame((state: RootState) => {
-  //   if (!pointsRef.current) return;
-  //   const points = pointsRef.current;
+  const randomPositions = useComputed(() => {
+    const positions = new Float32Array(particlesCount.value * 3);
+    for (let i = 0; i < particlesCount.value; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 3; // x
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 3; // y
+      positions[i * 3 + 2] = 0.2; // z
+    }
+    return positions;
+  });
 
-  //   const positions = points.geometry.attributes.position.array;
+  useFrame((state: RootState) => {
+    if (!pointsRef.current) return;
+    const points = pointsRef.current;
+    const positions: Float32Array = points.geometry.attributes.position.array;
+    const _randomPositions = randomPositions.value;
+    const _imagePositions = particlePositions.value;
+    for (let i = 0; i < particlesCount.value; i++) {
+      const i3 = i * 3;
 
-  //   for (let i = 0; i < particlesCount; i++) {
-  //     const i3 = i * 3;
+      positions[i3] =
+        positions[i3] + (_imagePositions[i3] - positions[i3]) * 0.05;
+      positions[i3 + 1] =
+        positions[i3 + 1] +
+        (_imagePositions[i3 + 1] - positions[i3 + 1]) * 0.05;
+      // Lerp toward target
+      // positions[i3] = positions[i3] + state.clock.elapsedTime * 0.005;
+      // positions[i3 + 1] = positions[i3 + 1] + state.clock.elapsedTime * 0.005;
+      // positions[i3 + 2] = positions[i3 + 2] + state.clock.elapsedTime * 0.005;
+    }
 
-  //     // Lerp toward target
-  //     positions[i3] = positions[i3] + state.clock.elapsedTime * 0.005;
-  //     positions[i3 + 1] = positions[i3 + 1] + state.clock.elapsedTime * 0.005;
-  //     positions[i3 + 2] = positions[i3 + 2] + state.clock.elapsedTime * 0.005;
-  //   }
-
-  //   // Tell Three.js to update
-  //   points.geometry.attributes.position.needsUpdate = true;
-  // });
+    // Tell Three.js to update
+    points.geometry.attributes.position.needsUpdate = true;
+  });
 
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={particlePositions.value.length / 3}
-          args={[particlePositions.value, 3]}
+          count={randomPositions.value.length / 3}
+          args={[randomPositions.value, 3]}
         />
       </bufferGeometry>
       <pointsMaterial size={0.035} color={"black"} transparent={true} />
