@@ -55,19 +55,16 @@ export async function asyncLoadImageData(imgSrc: string): Promise<ImageData> {
         return;
       }
 
-      console.debug("1");
       // The rest is identical regardless of canvas type
       // Draw the image onto the canvas
       ctx.drawImage(img, 0, 0);
 
-      console.debug("2");
       // Extract all pixel data from the canvas
       // getImageData returns an ImageData object with:
       // - data: Uint8ClampedArray of [R,G,B,A,R,G,B,A,...]
       // - width: image width in pixels
       // - height: image height in pixels
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      console.debug("3", imageData.height);
       resolve(imageData);
     };
 

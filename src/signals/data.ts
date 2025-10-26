@@ -1,9 +1,5 @@
-import { signal, effect, computed } from "@preact/signals-react";
-import {
-  asyncLoadImageData,
-  imageData2Points,
-  readFileAsDataURL,
-} from "../utils/image";
+import { signal, effect } from "@preact/signals-react";
+import { asyncLoadImageData, readFileAsDataURL } from "../utils/image";
 
 export const file = signal<File | null>(null);
 
@@ -12,7 +8,6 @@ export const imageData = signal<ImageData | null>(null);
 effect(() => {
   if (file.value) {
     readFileAsDataURL(file.value).then((data) => {
-      // console.log(data);
       loadDemoImageData(data as string);
     });
   }
