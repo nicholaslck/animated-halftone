@@ -10,6 +10,8 @@ function App() {
         <ParticleCanvas />
       </div>
 
+      <img className="fixed top-0 left-0" src="/halftone_demo.png" />
+
       {/*Control*/}
       <ControlPanel />
     </>
