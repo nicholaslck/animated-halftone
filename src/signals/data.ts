@@ -1,17 +1,28 @@
-import { signal } from "@preact/signals-react";
-import { asyncLoadImageData } from "../utils/image";
+import { signal, effect, computed } from "@preact/signals-react";
+import {
+  asyncLoadImageData,
+  imageData2Points,
+  readFileAsDataURL,
+} from "../utils/image";
 
 export const file = signal<File | null>(null);
 
 export const imageData = signal<ImageData | null>(null);
 
-function loadDemoImageData() {
-  const filePath = "/halftone_demo.png";
+effect(() => {
+  if (file.value) {
+    readFileAsDataURL(file.value).then((data) => {
+      // console.log(data);
+      loadDemoImageData(data as string);
+    });
+  }
+});
 
-  asyncLoadImageData(filePath).then((_imageData: ImageData) => {
-    console.log(_imageData.width, _imageData.height);
-    imageData.value = _imageData;
-  });
+async function loadDemoImageData(imgSrc: string) {
+  const _imageData: ImageData = await asyncLoadImageData(imgSrc);
+  console.log(_imageData.width, _imageData.height);
+  imageData.value = _imageData;
+  console.log("updated");
 }
 
-loadDemoImageData();
+loadDemoImageData("/halftone_demo.png");

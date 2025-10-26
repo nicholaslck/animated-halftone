@@ -8,7 +8,7 @@ export default defineConfig({
     tailwindcss(),
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler"]],
+        plugins: [["module:@preact/signals-react-transform"]],
       },
     }),
   ],

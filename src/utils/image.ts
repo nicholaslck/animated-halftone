@@ -11,15 +11,13 @@ export function isOffscreenCanvasSupported(): boolean {
 /**
  * Load image data with automatic fallback
  * Uses OffscreenCanvas if available, falls back to regular canvas
- * @param imagePath - URL or path to the image
+ * @param imgSrc - URL or path to the image
  * @returns Promise that resolves with ImageData object with:
  * - data: Uint8ClampedArray of [R,G,B,A,R,G,B,A,...]
  * - width: image width in pixels
  * - height: image height in pixels
  */
-export async function asyncLoadImageData(
-  imagePath: string,
-): Promise<ImageData> {
+export async function asyncLoadImageData(imgSrc: string): Promise<ImageData> {
   return new Promise<ImageData>((resolve, reject) => {
     // Create an Image object to load the image
     const img = new Image();
@@ -36,7 +34,7 @@ export async function asyncLoadImageData(
         | null;
 
       // Feature detection with if-else
-      if (isOffscreenCanvasSupported()) {
+      if (!isOffscreenCanvasSupported()) {
         console.log("Using OffscreenCanvas (modern browser)");
         // Create an explicitly offscreen canvas
         // This is more semantic and can be used in Web Workers
@@ -57,29 +55,45 @@ export async function asyncLoadImageData(
         return;
       }
 
+      console.debug("1");
       // The rest is identical regardless of canvas type
       // Draw the image onto the canvas
       ctx.drawImage(img, 0, 0);
 
+      console.debug("2");
       // Extract all pixel data from the canvas
       // getImageData returns an ImageData object with:
       // - data: Uint8ClampedArray of [R,G,B,A,R,G,B,A,...]
       // - width: image width in pixels
       // - height: image height in pixels
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+      console.debug("3", imageData.height);
       resolve(imageData);
     };
 
     img.onerror = () => {
-      reject(new Error(`Failed to load image: ${imagePath}`));
+      reject(new Error(`Failed to load image: ${imgSrc}`));
     };
 
     // Start loading the image
-    img.src = imagePath;
+    img.src = imgSrc;
   });
 }
 
+/**
+ * Converts image data into a set of 3D points.
+ *
+ * This function iterates over the pixels of the input `ImageData`. For each pixel that
+ * is considered "dark" (where any of the red, green, or blue color channels have a
+ * value less than 128), it generates a corresponding 3D point.
+ *
+ * The X and Y coordinates of the point are normalized to a [-1, 1] range, representing
+ * the pixel's position within the image dimensions. The Z coordinate is always set to 0.
+ *
+ * @param imageData - The ImageData object to process.
+ * @returns A Float32Array containing the generated 3D points, with each point
+ *          represented by three consecutive values (x, y, z).
+ */
 export function imageData2Points(imageData: ImageData): Float32Array {
   let px: number = 0;
   let w: number;
@@ -87,6 +101,8 @@ export function imageData2Points(imageData: ImageData): Float32Array {
   let r: number, g: number, b: number;
 
   const points = [];
+
+  console.time("imageData2Points");
 
   for (h = 0; h < imageData.height; h++) {
     for (w = 0; w < imageData.width; w++) {
@@ -104,5 +120,36 @@ export function imageData2Points(imageData: ImageData): Float32Array {
     }
   }
 
+  console.timeEnd("imageData2Points");
+
   return new Float32Array(points);
+}
+
+/**
+ * Reads a File object as a Data URL using FileReader
+ * @param {File} file - The file to read
+ * @returns {Promise<string>} - Data URL string
+ */
+export function readFileAsDataURL(
+  file: File,
+): Promise<string | ArrayBuffer | null | undefined> {
+  return new Promise((resolve, reject) => {
+    // FileReader is an async API for reading file contents
+    const reader = new FileReader();
+
+    // Event fired when reading completes successfully
+    reader.onload = (event) => {
+      // event.target.result contains the data URL string
+      resolve(event.target?.result);
+    };
+
+    // Event fired if reading fails
+    reader.onerror = () => {
+      reject(new Error("Failed to read file"));
+    };
+
+    // Start reading the file as a Data URL
+    // This is async - the file is read in chunks by the browser
+    reader.readAsDataURL(file);
+  });
 }
