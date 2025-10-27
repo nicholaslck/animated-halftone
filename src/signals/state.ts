@@ -1,12 +1,12 @@
 /** All states related to graphic rendering is hosted here. */
 
 import { computed } from "@preact/signals-react";
-import { imageData } from "./data";
+import { halftoneImage } from "./data";
 import { imageData2Points } from "../utils/image";
 
 export const imagePositions = computed(() => {
-  if (!imageData.value) return null;
-  return imageData2Points(imageData.value);
+  if (!halftoneImage.value) return null;
+  return imageData2Points(halftoneImage.value);
 });
 
 export const particleCount = computed<number>(() => {

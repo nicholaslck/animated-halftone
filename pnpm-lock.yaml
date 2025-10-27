@@ -23,6 +23,9 @@ importers:
       daisyui:
         specifier: ^5.3.7
         version: 5.3.7
+      floyd-steinberg:
+        specifier: ^1.0.6
+        version: 1.0.6
       lucide-react:
         specifier: ^0.546.0
         version: 0.546.0(react@19.2.0)
@@ -48,6 +51,9 @@ importers:
       '@preact/signals-react-transform':
         specifier: ^0.6.0
         version: 0.6.0(@babel/core@7.28.4)(react@19.2.0)
+      '@types/floyd-steinberg':
+        specifier: ^1.0.3
+        version: 1.0.3
       '@types/node':
         specifier: ^24.6.0
         version: 24.8.1
@@ -524,6 +530,9 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
+  '@types/floyd-steinberg@1.0.3':
+    resolution: {integrity: sha512-1VQ9wvaxxdUCnniIPFgvfxMV7UZKGiShk5UW8GRLTTcZRP9zi4LtlaSWpfauon4ezwVS4w2+qwtSOhTFt64ppA==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -849,6 +858,9 @@ packages:
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
+
+  floyd-steinberg@1.0.6:
+    resolution: {integrity: sha512-gzlre+taSQzEY+nCusbHJFQ3zHXBkRAX4fe3szssPY/N/t1ClBX9hnHZM4o8ZvpdqLLUPEavuZ/Noj71ZaA8+A==}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -1865,6 +1877,8 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
+  '@types/floyd-steinberg@1.0.3': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/node@24.8.1':
@@ -2234,6 +2248,8 @@ snapshots:
       keyv: 4.5.4
 
   flatted@3.3.3: {}
+
+  floyd-steinberg@1.0.6: {}
 
   fsevents@2.3.3:
     optional: true

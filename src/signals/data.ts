@@ -1,5 +1,6 @@
-import { signal, effect } from "@preact/signals-react";
+import { signal, effect, computed } from "@preact/signals-react";
 import { asyncLoadImageData, readFileAsDataURL } from "../utils/image";
+import floyd_steinberg from "floyd-steinberg";
 
 export const file = signal<File | null>(null);
 
@@ -12,13 +13,13 @@ effect(() => {
   }
 
   readFileAsDataURL(file.value).then((data) => {
-    loadDemoImageData(data as string);
+    asyncLoadImageData(data as string).then((imgData) => {
+      imageData.value = imgData;
+    });
   });
 });
 
-async function loadDemoImageData(imgSrc: string) {
-  const _imageData: ImageData = await asyncLoadImageData(imgSrc);
-  imageData.value = _imageData;
-}
-
-// loadDemoImageData("/halftone_demo.png");
+export const halftoneImage = computed(() => {
+  if (!imageData.value) return null;
+  return floyd_steinberg(imageData.value);
+});
