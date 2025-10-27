@@ -20,4 +20,4 @@ async function loadDemoImageData(imgSrc: string) {
   console.log("updated");
 }
 
-loadDemoImageData("/halftone_demo.png");
+// loadDemoImageData("/halftone_demo.png");

@@ -34,7 +34,7 @@ export async function asyncLoadImageData(imgSrc: string): Promise<ImageData> {
         | null;
 
       // Feature detection with if-else
-      if (!isOffscreenCanvasSupported()) {
+      if (isOffscreenCanvasSupported()) {
         console.log("Using OffscreenCanvas (modern browser)");
         // Create an explicitly offscreen canvas
         // This is more semantic and can be used in Web Workers
@@ -110,9 +110,11 @@ export function imageData2Points(imageData: ImageData): Float32Array {
 
       if (r < 128 || g < 128 || b < 128) {
         // place a vertex in the [-1,1] coordinate system
-        const normalized_w = (2 * w) / imageData.width - 1;
-        const normalized_h = 1 - (2 * h) / imageData.height;
-        points.push(normalized_w, normalized_h, 0);
+        points.push(
+          (2 * w) / imageData.width - 1,
+          1 - (2 * h) / imageData.height,
+          0,
+        );
       }
     }
   }
