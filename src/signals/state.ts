@@ -10,8 +10,8 @@ export const imagePositions = computed(() => {
 });
 
 export const particleCount = computed<number>(() => {
-  if (!imagePositions.value) return 256 * 256;
-  return imagePositions.value.length;
+  if (!imagePositions.value) return 200 * 200;
+  return imagePositions.value.length / 3;
 });
 
 export const randomPositions = computed(() => {

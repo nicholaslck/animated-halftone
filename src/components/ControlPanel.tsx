@@ -11,7 +11,11 @@ function ControlPanel() {
 
   const handleClearButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (inputRef.current) inputRef.current.files = null;
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.files = null;
+      file.value = null;
+    }
   };
 
   return (
