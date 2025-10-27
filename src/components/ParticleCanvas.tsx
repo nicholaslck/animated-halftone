@@ -11,42 +11,20 @@ function Renderer() {
   useSignals();
   const pointsRef = useRef<any>(null);
 
-  useFrame((state: RootState) => {
+  useFrame((state: RootState, delta: number) => {
     if (!pointsRef.current) return;
     const points = pointsRef.current;
     const pos: Float32Array = points.geometry.attributes.position.array;
     const imgPos = imagePositions.value;
 
     if (imgPos) {
+      const t = Math.min(delta * 3, 0.05);
       for (let i = 0; i < particleCount.value; i++) {
         const i3 = i * 3;
 
-        // jump to image position immediately
-        // pos[i3] = imgPos[i3];
-        // pos[i3 + 1] = imgPos[i3 + 1];
-        // pos[i3 + 2] = imgPos[i3 + 2];
-
-        const x_diff = imgPos[i3] - pos[i3];
-        const y_diff = imgPos[i3 + 1] - pos[i3 + 1];
-        const z_diff = imgPos[i3 + 2] - pos[i3 + 2];
-
-        if (Math.abs(x_diff) < 0.001) {
-          pos[i3] = imgPos[i3];
-        } else {
-          pos[i3] = pos[i3] + x_diff * 0.05;
-        }
-
-        if (Math.abs(y_diff) < 0.001) {
-          pos[i3 + 1] = imgPos[i3 + 1];
-        } else {
-          pos[i3 + 1] = pos[i3 + 1] + y_diff * 0.05;
-        }
-
-        if (Math.abs(z_diff) < 0.001) {
-          pos[i3 + 2] = imgPos[i3 + 2];
-        } else {
-          pos[i3 + 2] = pos[i3 + 2] + z_diff * 0.05;
-        }
+        pos[i3] = (1 - t) * pos[i3] + t * imgPos[i3];
+        pos[i3 + 1] = (1 - t) * pos[i3 + 1] + t * imgPos[i3 + 1];
+        pos[i3 + 2] = (1 - t) * pos[i3 + 2] + t * imgPos[i3 + 2];
       }
 
       // Tell Three.js to update

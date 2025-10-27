@@ -1,15 +1,17 @@
 import { RefreshCw } from "lucide-react";
 import { file } from "../signals/data";
+import { useRef } from "react";
 
 function ControlPanel() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      file.value = e.target.files.item(0);
-    }
+    file.value = e.target.files ? e.target.files.item(0) : null;
   };
 
-  const handleConvertButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClearButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (inputRef.current) inputRef.current.files = null;
   };
 
   return (
@@ -20,6 +22,7 @@ function ControlPanel() {
             Select a file
           </legend>
           <input
+            ref={inputRef}
             type="file"
             className="file-input bg-gray-50 -mt-1.5"
             accept=".jpg,.png,.webp"
@@ -30,9 +33,9 @@ function ControlPanel() {
           </label>
         </fieldset>
 
-        <button className="btn" onClick={handleConvertButtonClick}>
+        <button className="btn" onClick={handleClearButtonClick}>
           <RefreshCw size={16} />
-          Convert
+          Clear
         </button>
       </div>
     </div>

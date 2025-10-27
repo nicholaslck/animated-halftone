@@ -4,9 +4,14 @@ import { computed } from "@preact/signals-react";
 import { imageData } from "./data";
 import { imageData2Points } from "../utils/image";
 
+export const imagePositions = computed(() => {
+  if (!imageData.value) return null;
+  return imageData2Points(imageData.value);
+});
+
 export const particleCount = computed<number>(() => {
-  if (!imageData.value) return 256 * 256;
-  return imageData.value.height * imageData.value.width;
+  if (!imagePositions.value) return 256 * 256;
+  return imagePositions.value.length;
 });
 
 export const randomPositions = computed(() => {
@@ -19,9 +24,4 @@ export const randomPositions = computed(() => {
     pos[i3 + 2] = Math.random() * 2 - 1;
   }
   return pos;
-});
-
-export const imagePositions = computed(() => {
-  if (!imageData.value) return null;
-  return imageData2Points(imageData.value);
 });
