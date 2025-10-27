@@ -6,10 +6,9 @@ import {
   randomPositions,
 } from "../signals/state";
 import { BufferAttribute } from "three";
-import { useSignals } from "@preact/signals-react/runtime";
+import { OrbitControls } from "@react-three/drei";
 
 function Renderer() {
-  useSignals();
   const pointsRef = useRef<any>(null);
 
   useFrame((_: RootState, delta: number) => {
@@ -62,17 +61,25 @@ function Renderer() {
           args={[new Float32Array(new Array(256 * 256 * 3).fill(0)), 3]}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.035} color={"black"} transparent={true} />
+      <pointsMaterial size={0.015} color={"black"} transparent={true} />
     </points>
   );
 }
 
 function ParticleCanvas() {
-  useSignals();
   return (
     <div id="canvas-container" className="h-full w-full">
-      <Canvas camera={{ zoom: 2.6 }}>
+      <Canvas camera={{ position: [0, 0, 2] }}>
         <Renderer />
+        <OrbitControls
+          enablePan={true} // disable panning
+          enableRotate={false} // allow rotation
+          enableZoom={true} // allow scroll & pinch zoom
+          zoomSpeed={1} // optional, slower zoom
+          minDistance={1.3} // how close you can zoom in
+          maxDistance={15} // how far you can zoom out
+          zoomToCursor={false}
+        />
       </Canvas>
     </div>
   );
