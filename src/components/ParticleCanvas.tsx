@@ -88,15 +88,11 @@ function ParticleCanvas() {
         <CameraControls
           ref={cameraControlsRef}
           minDistance={1}
+          maxDistance={10}
           enabled={true}
           dollyToCursor={false}
           infinityDolly={false}
-          mouseButtons={{
-            left: ACTION.OFFSET,
-            middle: ACTION.DOLLY,
-            right: ACTION.ROTATE,
-            wheel: ACTION.DOLLY,
-          }}
+          dragToOffset={true}
         />
       </Canvas>
     </div>
