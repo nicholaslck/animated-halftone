@@ -9,8 +9,6 @@ import { BufferAttribute } from "three";
 import { CameraControls, CameraControlsImpl } from "@react-three/drei";
 import { EventContext } from "../contexts/EventContext";
 
-const { ACTION } = CameraControlsImpl;
-
 function Renderer() {
   const pointsRef = useRef<any>(null);
 
