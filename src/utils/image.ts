@@ -84,8 +84,9 @@ export async function asyncLoadImageData(imgSrc: string): Promise<ImageData> {
  * is considered "dark" (where any of the red, green, or blue color channels have a
  * value less than 128), it generates a corresponding 3D point.
  *
- * The X and Y coordinates of the point are normalized to a [-1, 1] range, representing
- * the pixel's position within the image dimensions. The Z coordinate is always set to 0.
+ * The X and Y coordinates of the point are scaled based on the image's dimensions,
+ * allowing the scene to extend beyond the [-1, 1] range for higher resolution images.
+ * The Z coordinate is always set to 0.
  *
  * @param imageData - The ImageData object to process.
  * @returns A Float32Array containing the generated 3D points, with each point
@@ -96,6 +97,16 @@ export function imageData2Points(imageData: ImageData): Float32Array {
   let w: number;
   let h: number;
   let r: number, g: number, b: number;
+  // Define a reference width (e.g., 256 pixels map to a 2-unit extent)
+  const REFERENCE_WIDTH = 256;
+
+  // Calculate the ratio of world units per pixel based on the reference width
+  // This means that for a 256px image, it will span from -1 to 1 (total 2 units)
+  const pxUnitRatio = 2 / REFERENCE_WIDTH;
+
+  // Calculate half the width and height in world units for centering
+  const halfWorldWidth = imageData.width * 0.5 * pxUnitRatio;
+  const halfWorldHeight = imageData.height * 0.5 * pxUnitRatio;
 
   const points = [];
 
@@ -109,11 +120,11 @@ export function imageData2Points(imageData: ImageData): Float32Array {
       b = imageData.data[px * 4 + 2];
 
       if (r < 128 || g < 128 || b < 128) {
-        // place a vertex in the [-1,1] coordinate system
+        // Calculate world coordinates
         points.push(
-          (2 * w) / imageData.width - 1,
-          1 - (2 * h) / imageData.height,
-          0,
+          w * pxUnitRatio - halfWorldWidth, // centers the image horizontally
+          halfWorldHeight - h * pxUnitRatio, // centers the image vertically and inverts Y
+          0
         );
       }
     }
@@ -130,7 +141,7 @@ export function imageData2Points(imageData: ImageData): Float32Array {
  * @returns {Promise<string>} - Data URL string
  */
 export function readFileAsDataURL(
-  file: File,
+  file: File
 ): Promise<string | ArrayBuffer | null | undefined> {
   return new Promise((resolve, reject) => {
     // FileReader is an async API for reading file contents
