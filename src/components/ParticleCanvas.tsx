@@ -1,5 +1,5 @@
 import { Canvas, useFrame, type RootState } from "@react-three/fiber";
-import { useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import {
   imagePositions,
   particleCount,
@@ -7,6 +7,7 @@ import {
 } from "../signals/state";
 import { BufferAttribute } from "three";
 import { CameraControls, CameraControlsImpl } from "@react-three/drei";
+import { EventContext } from "../contexts/EventContext";
 
 const { ACTION } = CameraControlsImpl;
 
@@ -69,11 +70,23 @@ function Renderer() {
 }
 
 function ParticleCanvas() {
+  const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
+
+  const { on } = useContext(EventContext);
+
+  useEffect(() => {
+    return on("reset-camera", () => {
+      cameraControlsRef.current?.setLookAt(0, 0, 2, 0, 0, 0, true);
+      cameraControlsRef.current?.setFocalOffset(0, 0, 0, true);
+    });
+  }, [on, cameraControlsRef]);
+
   return (
     <div id="canvas-container" className="h-full w-full">
       <Canvas camera={{ position: [0, 0, 2] }}>
         <Renderer />
         <CameraControls
+          ref={cameraControlsRef}
           minDistance={1}
           enabled={true}
           dollyToCursor={false}

@@ -1,8 +1,11 @@
 import { Download, Focus, RefreshCw } from "lucide-react";
 import { file } from "../signals/data";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { EventContext } from "../contexts/EventContext";
 
 function ControlPanel() {
+  const { dispatch } = useContext(EventContext);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +47,10 @@ function ControlPanel() {
             Clear
           </button>
 
-          <button className="btn btn-outline" onClick={() => {}}>
+          <button
+            className="btn btn-outline"
+            onClick={() => dispatch("reset-camera")}
+          >
             <Focus size={16} />
             Reset camera
           </button>

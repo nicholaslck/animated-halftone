@@ -1,10 +1,11 @@
 import "./App.css";
+import { EventContextProvider } from "./assets/EventContextProvider";
 import ControlPanel from "./components/ControlPanel";
 import ParticleCanvas from "./components/ParticleCanvas";
 
 function App() {
   return (
-    <>
+    <EventContextProvider>
       {/*Canvas*/}
       <div className="bg-white fixed w-full h-full">
         <ParticleCanvas />
@@ -14,7 +15,7 @@ function App() {
 
       {/*Control*/}
       <ControlPanel />
-    </>
+    </EventContextProvider>
   );
 }
 
