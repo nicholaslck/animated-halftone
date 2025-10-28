@@ -1,4 +1,4 @@
-import { RefreshCw } from "lucide-react";
+import { Download, Focus, RefreshCw } from "lucide-react";
 import { file } from "../signals/data";
 import { useRef } from "react";
 
@@ -20,7 +20,7 @@ function ControlPanel() {
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-10">
-      <div className="shadow-md rounded-2xl bg-gray-50 text-gray-900 px-8 py-4 flex items-center gap-4">
+      <div className="shadow-md rounded-2xl bg-gray-50 text-gray-900 px-8 py-4 flex items-center gap-4 flex-wrap">
         <fieldset className="fieldset">
           <legend className="fieldset-legend text-gray-900">
             Select a color image and see what it will be
@@ -38,10 +38,22 @@ function ControlPanel() {
           </label>
         </fieldset>
 
-        <button className="btn" onClick={handleClearButtonClick}>
-          <RefreshCw size={16} />
-          Clear
-        </button>
+        <div className="flex gap-2 flex-nowrap">
+          <button className="btn btn-outline" onClick={handleClearButtonClick}>
+            <RefreshCw size={16} />
+            Clear
+          </button>
+
+          <button className="btn btn-outline" onClick={() => {}}>
+            <Focus size={16} />
+            Reset camera
+          </button>
+
+          <button className="btn btn-primary" onClick={() => {}}>
+            <Download size={16} />
+            Download
+          </button>
+        </div>
       </div>
     </div>
   );
