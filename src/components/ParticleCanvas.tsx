@@ -6,7 +6,9 @@ import {
   randomPositions,
 } from "../signals/state";
 import { BufferAttribute } from "three";
-import { OrbitControls } from "@react-three/drei";
+import { CameraControls, CameraControlsImpl } from "@react-three/drei";
+
+const { ACTION } = CameraControlsImpl;
 
 function Renderer() {
   const pointsRef = useRef<any>(null);
@@ -71,14 +73,17 @@ function ParticleCanvas() {
     <div id="canvas-container" className="h-full w-full">
       <Canvas camera={{ position: [0, 0, 2] }}>
         <Renderer />
-        <OrbitControls
-          enablePan={true} // disable panning
-          enableRotate={false} // allow rotation
-          enableZoom={true} // allow scroll & pinch zoom
-          zoomSpeed={1} // optional, slower zoom
-          minDistance={1.3} // how close you can zoom in
-          maxDistance={15} // how far you can zoom out
-          zoomToCursor={false}
+        <CameraControls
+          minDistance={1}
+          enabled={true}
+          dollyToCursor={false}
+          infinityDolly={false}
+          mouseButtons={{
+            left: ACTION.OFFSET,
+            middle: ACTION.DOLLY,
+            right: ACTION.ROTATE,
+            wheel: ACTION.DOLLY,
+          }}
         />
       </Canvas>
     </div>
