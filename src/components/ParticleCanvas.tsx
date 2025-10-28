@@ -85,8 +85,7 @@ function ParticleCanvas() {
         <Renderer />
         <CameraControls
           ref={cameraControlsRef}
-          minDistance={1}
-          maxDistance={10}
+          minDistance={1.2}
           enabled={true}
           dollyToCursor={false}
           infinityDolly={false}
