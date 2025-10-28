@@ -5,17 +5,21 @@ import ParticleCanvas from "./components/ParticleCanvas";
 
 function App() {
   return (
-    <EventContextProvider>
-      {/*Canvas*/}
-      <div className="bg-white fixed w-full h-full">
-        <ParticleCanvas />
-      </div>
+    <>
+      <h1 className="fixed top-4 left-1/2 -translate-x-1/2 text-black z-10 text-lg">
+        Floyd-Steinberg Dithering
+      </h1>
 
-      {/*<img className="fixed top-0 left-0" src="/halftone_demo.png" />*/}
+      <EventContextProvider>
+        {/*Canvas*/}
+        <div className="bg-white fixed w-full h-full">
+          <ParticleCanvas />
+        </div>
 
-      {/*Control*/}
-      <ControlPanel />
-    </EventContextProvider>
+        {/*Control*/}
+        <ControlPanel />
+      </EventContextProvider>
+    </>
   );
 }
 
