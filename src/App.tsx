@@ -6,7 +6,7 @@ import ParticleCanvas from "./components/ParticleCanvas";
 function App() {
   return (
     <>
-      <h1 className="fixed top-4 left-1/2 -translate-x-1/2 text-black z-10 text-lg">
+      <h1 className="fixed top-8 left-1/2 -translate-x-1/2 text-black z-10 text-lg text-nowrap">
         Floyd-Steinberg Dithering
       </h1>
 

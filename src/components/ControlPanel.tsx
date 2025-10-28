@@ -37,7 +37,7 @@ function ControlPanel() {
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-10">
       <div className="shadow-md rounded-2xl bg-gray-50 text-gray-900 px-8 py-4 flex items-center gap-4 flex-wrap">
-        <fieldset className="fieldset">
+        <fieldset className="fieldset block">
           <legend className="fieldset-legend text-gray-900">
             Select a color image and see what it will be
           </legend>
@@ -54,10 +54,10 @@ function ControlPanel() {
           </label>
         </fieldset>
 
-        <div className="flex gap-2 flex-nowrap">
+        <div className="flex gap-2 flex-wrap md:flex-nowrap w-fit">
           <button className="btn btn-outline" onClick={handleClearButtonClick}>
             <RefreshCw size={16} />
-            Clear
+            <span className="hidden md:inline">Clear</span>
           </button>
 
           <button
@@ -65,7 +65,7 @@ function ControlPanel() {
             onClick={() => dispatch("reset-camera")}
           >
             <Focus size={16} />
-            Reset camera
+            <span className="hidden md:inline">Reset camera</span>
           </button>
 
           <button
@@ -74,7 +74,7 @@ function ControlPanel() {
             disabled={!halftoneImage.value}
           >
             <Download size={16} />
-            Download
+            <span className="hidden md:inline">Download</span>
           </button>
         </div>
       </div>
