@@ -163,3 +163,27 @@ export function readFileAsDataURL(
     reader.readAsDataURL(file);
   });
 }
+
+/**
+ * Converts ImageData to a PNG data URL.
+ * @param imageData - The ImageData object to convert.
+ * @returns A string representing the PNG data URL.
+ */
+export function imageData2PNG(imageData: ImageData): string {
+  // Create an offscreen canvas to draw the image data
+  const canvas = document.createElement("canvas");
+  canvas.width = imageData.width;
+  canvas.height = imageData.height;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("Failed to get canvas context");
+  }
+
+  // Put the image data onto the canvas
+  ctx.putImageData(imageData, 0, 0);
+
+  // Convert the canvas content to a PNG data URL
+  const pngDataURL = canvas.toDataURL("image/png");
+  return pngDataURL;
+}

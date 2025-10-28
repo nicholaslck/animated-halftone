@@ -1,7 +1,8 @@
 import { Download, Focus, RefreshCw } from "lucide-react";
-import { file } from "../signals/data";
+import { file, halftoneImage } from "../signals/data";
 import { useContext, useRef } from "react";
 import { EventContext } from "../contexts/EventContext";
+import { imageData2PNG } from "../utils/image";
 
 function ControlPanel() {
   const { dispatch } = useContext(EventContext);
@@ -19,6 +20,18 @@ function ControlPanel() {
       inputRef.current.files = null;
       file.value = null;
     }
+  };
+
+  const handleDownloadButtonClick = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    if (!halftoneImage.value) return;
+
+    const link = document.createElement("a");
+    link.href = imageData2PNG(halftoneImage.value);
+    link.download = file.value!.name.replace(/\.[^/.]+$/, "") + "-halftone.png";
+    link.click();
   };
 
   return (
@@ -55,7 +68,11 @@ function ControlPanel() {
             Reset camera
           </button>
 
-          <button className="btn btn-primary" onClick={() => {}}>
+          <button
+            className="btn btn-primary"
+            onClick={handleDownloadButtonClick}
+            disabled={!halftoneImage.value}
+          >
             <Download size={16} />
             Download
           </button>
