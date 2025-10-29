@@ -39,7 +39,7 @@ function ControlPanel() {
       <div className="shadow-md rounded-2xl bg-gray-50 text-gray-900 px-8 py-4 flex items-center gap-4 flex-wrap lg:flex-nowrap">
         <fieldset className="fieldset block">
           <legend className="fieldset-legend text-gray-900">
-            Select a color image and see what it will be
+            Select a color image and see what it will be!
           </legend>
           <input
             ref={inputRef}
@@ -50,7 +50,9 @@ function ControlPanel() {
             multiple={false}
           />
           <label className="label">
-            Max size 2MB, Accept .JPG, .PNG, .WEBP only.
+            Recommend image resolution around 512x512,
+            <br />
+            Accept .JPG, .PNG, .WEBP only.
           </label>
         </fieldset>
 

@@ -187,3 +187,40 @@ export function imageData2PNG(imageData: ImageData): string {
   const pngDataURL = canvas.toDataURL("image/png");
   return pngDataURL;
 }
+
+// If image width or height > max_dimension, downsample it to max_dimension
+export function downsampleImageData(
+  imageData: ImageData,
+  max_dimension: number
+): ImageData {
+  if (imageData.width <= max_dimension && imageData.height <= max_dimension) {
+    return imageData;
+  }
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("Failed to get canvas context");
+  }
+
+  // Calculate the new dimensions while maintaining the aspect ratio
+  const aspectRatio = imageData.width / imageData.height;
+  let newWidth = max_dimension;
+  let newHeight = max_dimension;
+
+  if (aspectRatio > 1) {
+    newHeight = max_dimension / aspectRatio;
+  } else {
+    newWidth = max_dimension * aspectRatio;
+  }
+
+  canvas.width = newWidth;
+  canvas.height = newHeight;
+
+  // Draw the original image data onto the canvas with the new dimensions
+  ctx.drawImage(canvas, 0, 0, newWidth, newHeight);
+
+  // Get the downsampled image data from the canvas
+  const downsampledImageData = ctx.getImageData(0, 0, newWidth, newHeight);
+  return downsampledImageData;
+}
