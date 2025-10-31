@@ -6,4 +6,6 @@ export interface Halftoner {
   process(imageData: ImageData): ImageData;
 }
 
-export type HalftonerID = "floyd-steinberg";
+export const HalftonerIDs = ["floyd-steinberg", "ostromoukhov's"] as const;
+
+export type HalftonerID = (typeof HalftonerIDs)[number];
