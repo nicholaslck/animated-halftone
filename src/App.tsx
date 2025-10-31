@@ -1,23 +1,26 @@
 import "./App.css";
 import { EventContextProvider } from "./assets/EventContextProvider";
+import AlgorithmPanel from "./components/AlgorithmPanel";
 import ControlPanel from "./components/ControlPanel";
 import ParticleCanvas from "./components/ParticleCanvas";
 
 function App() {
   return (
     <>
-      <h1 className="fixed top-8 left-1/2 -translate-x-1/2 text-black z-10 text-lg text-nowrap">
+      <h1 className="fixed top-4 right-4 text-black z-10 text-lg text-nowrap">
         Floyd-Steinberg Dithering
       </h1>
 
       <EventContextProvider>
-        {/*Canvas*/}
-        <div className="bg-white fixed w-full h-full">
-          <ParticleCanvas />
-        </div>
+        <AlgorithmPanel>
+          {/*Canvas*/}
+          <div className="bg-white fixed w-full h-full">
+            <ParticleCanvas />
+          </div>
 
-        {/*Control*/}
-        <ControlPanel />
+          {/*Control*/}
+          <ControlPanel />
+        </AlgorithmPanel>
       </EventContextProvider>
     </>
   );
