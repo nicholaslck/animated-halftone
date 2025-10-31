@@ -4,11 +4,21 @@ import {
   downsampleImageData,
   readFileAsDataURL,
 } from "../utils/image";
-import floyd_steinberg from "floyd-steinberg";
+import {
+  createHalftoner,
+  type Halftoner,
+  type HalftonerID,
+} from "../algorithms";
 
 export const file = signal<File | null>(null);
 
 export const imageData = signal<ImageData | null>(null);
+
+export const algorithmId = signal<HalftonerID>("floyd-steinberg");
+
+export const algorithm = computed<Halftoner>(() =>
+  createHalftoner(algorithmId.value),
+);
 
 effect(() => {
   if (!file.value) {
@@ -25,5 +35,5 @@ effect(() => {
 
 export const halftoneImage = computed(() => {
   if (!imageData.value) return null;
-  return floyd_steinberg(imageData.value);
+  return algorithm.value.process(imageData.value);
 });
