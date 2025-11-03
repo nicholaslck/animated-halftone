@@ -35,5 +35,8 @@ effect(() => {
 
 export const halftoneImage = computed(() => {
   if (!imageData.value) return null;
+  const a = algorithm.value.process(imageData.value);
+  console.debug(a.data.length);
+  console.debug(a.data.slice(0, 10));
   return algorithm.value.process(imageData.value);
 });
