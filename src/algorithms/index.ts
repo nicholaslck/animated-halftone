@@ -1,6 +1,8 @@
 import type { Halftoner, HalftonerID } from "./type";
 import { FloydSteinbergErrorDiffusion } from "./floyd-steinberg";
 
+import { OstromoukhovsErrorDiffusion } from "./ostromoukhovs";
+
 export { HalftonerIDs } from "./type";
 export type { Halftoner, HalftonerID } from "./type";
 
@@ -11,9 +13,8 @@ export function createHalftoner(id: HalftonerID): Halftoner {
     case "floyd-steinberg":
       return new FloydSteinbergErrorDiffusion();
     case "ostromoukhov's":
-      // TODO:
-      throw new Error("Ostromoukhov's halftoner is not implemented yet");
+      return new OstromoukhovsErrorDiffusion();
     default:
-      throw new Error(`Unknown halftoner: ${name}`);
+      throw new Error(`Unknown halftoner: ${id}`);
   }
 }

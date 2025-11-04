@@ -1,10 +1,82 @@
 import { type Halftoner, type HalftonerID } from "./type";
+import { convertRGBAtoL } from "./utils";
 
-export class Ostromoukhovs implements Halftoner {
+export class OstromoukhovsErrorDiffusion implements Halftoner {
   id: HalftonerID = "ostromoukhov's";
 
-  process(imageData: ImageData): ImageData {
-    return new ImageData(0, 0);
+  private readonly fullCoefficients: readonly (readonly number[])[];
+
+  constructor() {
+    const reversedCoefficients = [...coefficients].reverse();
+    this.fullCoefficients = [...coefficients, ...reversedCoefficients];
+  }
+
+  process(image: ImageData): ImageData {
+    // FIXME: the algorithm is not complete, need to check and fix implementation
+    const { width, height } = image;
+    const data = convertRGBAtoL(image).data;
+
+    const outputData = new Float64Array(data.length);
+
+    let leftToRight = true;
+
+    const directions = [
+      [1, 0],
+      [-1, 1],
+      [0, 1],
+    ] as const;
+
+    for (let y = 0; y < height; y++) {
+      const xRange = leftToRight
+        ? Array.from({ length: width }, (_, i) => i)
+        : Array.from({ length: width }, (_, i) => width - 1 - i);
+
+      for (const x of xRange) {
+        const index = y * width + x;
+        const oldPixel = data[index];
+        const newPixel = oldPixel <= 127.5 ? 0 : 255;
+        const quantError = oldPixel - newPixel;
+
+        const outputIndex = index * 4;
+        outputData[outputIndex] = newPixel;
+        outputData[outputIndex + 1] = newPixel;
+        outputData[outputIndex + 2] = newPixel;
+        outputData[outputIndex + 3] = 255;
+
+        const coeffIndex = Math.min(255, Math.floor(oldPixel));
+        const tmp = this.fullCoefficients[coeffIndex];
+        const intensityCoefficients = tmp.slice(0, 3);
+        const intensityCoefficientsSum = tmp[3];
+
+        if (intensityCoefficientsSum === 0) {
+          continue;
+        }
+
+        for (let i = 0; i < directions.length; i++) {
+          const [dx, dy] = directions[i];
+          const pixelCoefficient = intensityCoefficients[i];
+
+          const xn = leftToRight ? x + dx : x - dx;
+          const yn = y + dy;
+
+          if (xn >= 0 && xn < width && yn >= 0 && yn < height) {
+            const neighborIndex = yn * width + xn;
+            let newValue =
+              data[neighborIndex] +
+              (pixelCoefficient * quantError) / intensityCoefficientsSum;
+
+            if (newValue < 0) newValue = 0;
+            if (newValue > 255) newValue = 255;
+
+            data[neighborIndex] = newValue;
+          }
+        }
+      }
+      leftToRight = !leftToRight;
+    }
+
+    image.data.set(outputData);
+    return image;
   }
 }
 
