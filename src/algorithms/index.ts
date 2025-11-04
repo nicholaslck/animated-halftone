@@ -1,7 +1,8 @@
 import type { Halftoner, HalftonerID } from "./type";
 import { FloydSteinbergErrorDiffusion } from "./floyd-steinberg";
 
-export type { Halftoner } from "./type";
+export { HalftonerIDs } from "./type";
+export type { Halftoner, HalftonerID } from "./type";
 
 export { FloydSteinbergErrorDiffusion } from "./floyd-steinberg";
 

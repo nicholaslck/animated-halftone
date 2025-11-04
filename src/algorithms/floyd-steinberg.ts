@@ -1,4 +1,5 @@
 import { type Halftoner, type HalftonerID } from "./type";
+import { convertRGBAtoL } from "./utils";
 
 const kernel = [
   [1, 0, 7 / 16],
@@ -13,19 +14,14 @@ export class FloydSteinbergErrorDiffusion implements Halftoner {
   process(image: ImageData): ImageData {
     const w = image.width;
     const h = image.height;
-    const data = new Float32Array(image.data);
+    const data = new Float64Array(convertRGBAtoL(image).data);
 
     let currentPixel, newPixelValue, err;
-
-    // Greyscale luminance (sets r pixels to luminance of rgb)
-    for (let i = 0; i < data.length; i += 4) {
-      data[i] = data[i] * 0.229 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
-    }
 
     for (let y = 0; y < image.height; y++) {
       for (let x = 0; x < image.width; x++) {
         currentPixel = y * image.width * 4 + x * 4;
-        newPixelValue = data[currentPixel] <= 127.5 ? 0 : 255;
+        newPixelValue = data[currentPixel] <= 127.5 ? 0.0 : 255.0;
         err = data[currentPixel] - newPixelValue;
         data[currentPixel] = newPixelValue;
 
@@ -41,7 +37,7 @@ export class FloydSteinbergErrorDiffusion implements Halftoner {
       }
     }
 
-    image.data.set(data);
+    image.data.set(new Uint8ClampedArray(data));
     return image;
   }
 }
