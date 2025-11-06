@@ -12,7 +12,6 @@ export class OstromoukhovsErrorDiffusion implements Halftoner {
   }
 
   process(image: ImageData): ImageData {
-    // FIXME: the algorithm is not complete, need to check and fix implementation
     const { width, height } = image;
     const data = convertRGBAtoL(image).data;
 
@@ -27,30 +26,28 @@ export class OstromoukhovsErrorDiffusion implements Halftoner {
     ] as const;
 
     for (let y = 0; y < height; y++) {
-      const xRange = leftToRight
-        ? Array.from({ length: width }, (_, i) => i)
-        : Array.from({ length: width }, (_, i) => width - 1 - i);
+      const xRange = [];
+      if (leftToRight) {
+        for (let i = 0; i < width; i++) xRange.push(i);
+      } else {
+        for (let i = width - 1; i > -1; i--) xRange.push(i);
+      }
 
       for (const x of xRange) {
-        const index = y * width + x;
+        const index = y * width * 4 + x * 4;
         const oldPixel = data[index];
         const newPixel = oldPixel <= 127.5 ? 0 : 255;
         const quantError = oldPixel - newPixel;
 
-        const outputIndex = index * 4;
-        outputData[outputIndex] = newPixel;
-        outputData[outputIndex + 1] = newPixel;
-        outputData[outputIndex + 2] = newPixel;
-        outputData[outputIndex + 3] = 255;
+        outputData[index] = newPixel;
+        outputData[index + 1] = newPixel;
+        outputData[index + 2] = newPixel;
+        outputData[index + 3] = 255;
 
-        const coeffIndex = Math.min(255, Math.floor(oldPixel));
+        const coeffIndex = Math.min(255, Math.round(oldPixel));
         const tmp = this.fullCoefficients[coeffIndex];
         const intensityCoefficients = tmp.slice(0, 3);
         const intensityCoefficientsSum = tmp[3];
-
-        if (intensityCoefficientsSum === 0) {
-          continue;
-        }
 
         for (let i = 0; i < directions.length; i++) {
           const [dx, dy] = directions[i];
@@ -59,20 +56,27 @@ export class OstromoukhovsErrorDiffusion implements Halftoner {
           const xn = leftToRight ? x + dx : x - dx;
           const yn = y + dy;
 
-          if (xn >= 0 && xn < width && yn >= 0 && yn < height) {
-            const neighborIndex = yn * width + xn;
+          if (0 <= xn && xn < width && 0 <= yn && yn < height) {
+            const neighborIndex = yn * width * 4 + xn * 4;
             let newValue =
               data[neighborIndex] +
               (pixelCoefficient * quantError) / intensityCoefficientsSum;
 
             if (newValue < 0) newValue = 0;
-            if (newValue > 255) newValue = 255;
+            if (newValue >= 255) newValue = 255;
 
             data[neighborIndex] = newValue;
           }
         }
       }
-      leftToRight = !leftToRight;
+
+      if (leftToRight && xRange[xRange.length - 1] > width - 1) {
+        leftToRight = false;
+      }
+
+      if (!leftToRight && xRange[xRange.length - 1] <= 0) {
+        leftToRight = true;
+      }
     }
 
     image.data.set(outputData);
