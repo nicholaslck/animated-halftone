@@ -1,4 +1,4 @@
-import { Info } from "lucide-react";
+import { CheckCircle, Info } from "lucide-react";
 import { HalftonerIDs, type HalftonerID } from "../algorithms";
 import { algorithmId } from "../signals/data";
 
@@ -19,9 +19,16 @@ function AlgorithmItem({ id, onSelect }: AlgorithmItemProps) {
       <button className="btn btn-sm btn-outline border-none">
         <Info size={22} />
       </button>
-      <button className="btn btn-sm" onClick={() => onSelect(id)}>
-        Apply
-      </button>
+
+      {algorithmId.value === id ? (
+        <button className="btn btn-sm btn-outline border-none bg-success text-success-content">
+          <CheckCircle size={22} />
+        </button>
+      ) : (
+        <button className="btn btn-sm btn-outline" onClick={() => onSelect(id)}>
+          Apply
+        </button>
+      )}
     </li>
   );
 }

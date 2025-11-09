@@ -1,5 +1,5 @@
 import { type Halftoner, type HalftonerID } from "./type";
-import { convertRGBAtoL } from "./utils";
+import { convertRGBAtoL, copyImage } from "./utils";
 
 const kernel = [
   [1, 0, 7 / 16],
@@ -10,14 +10,11 @@ const kernel = [
 
 export class FloydSteinbergErrorDiffusion implements Halftoner {
   id: HalftonerID = "floyd-steinberg";
+  name = "Floyd-Steinberg Error Diffusion Dithering";
 
   process(image: ImageData): ImageData {
     // Create a deep copy of the image data to avoid mutating the original.
-    const imageCopy = new ImageData(
-      new Uint8ClampedArray(image.data),
-      image.width,
-      image.height,
-    );
+    const imageCopy = copyImage(image);
 
     console.debug("Processing Floyd-Steinberg error diffusion");
     const w = imageCopy.width;

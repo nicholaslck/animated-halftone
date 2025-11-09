@@ -12,7 +12,7 @@ function AlgorithmSidebarButton() {
     <div className="m-4 tooltip tooltip-right" data-tip="Close">
       <label
         htmlFor="my-drawer-4"
-        className="btn btn-outline btn-circle drawer-button"
+        className="btn btn-outline btn-circle drawer-button bg-neutral text-neutral-content"
       >
         <PanelLeftClose
           className="is-drawer-open:inline is-drawer-close:hidden"

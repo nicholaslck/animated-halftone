@@ -3,13 +3,20 @@ import { EventContextProvider } from "./assets/EventContextProvider";
 import AlgorithmPanel from "./components/AlgorithmPanel";
 import ControlPanel from "./components/ControlPanel";
 import ParticleCanvas from "./components/ParticleCanvas";
+import { algorithm } from "./signals/data";
+
+function Title() {
+  return (
+    <h1 className="fixed top-4 right-4 text-black z-10 text-lg text-nowrap">
+      {algorithm.value.name}
+    </h1>
+  );
+}
 
 function App() {
   return (
     <>
-      <h1 className="fixed top-4 right-4 text-black z-10 text-lg text-nowrap">
-        Floyd-Steinberg Dithering
-      </h1>
+      <Title />
 
       <EventContextProvider>
         <AlgorithmPanel>

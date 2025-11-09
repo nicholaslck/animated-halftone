@@ -4,6 +4,8 @@ import { convertRGBAtoL, copyImage } from "./utils";
 export class OstromoukhovsErrorDiffusion implements Halftoner {
   id: HalftonerID = "ostromoukhov's";
 
+  name = "Ostromoukhov's Error Diffusion Dithering";
+
   private readonly fullCoefficients: readonly (readonly number[])[];
 
   constructor() {
