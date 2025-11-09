@@ -4,7 +4,7 @@ import {
   imagePositions,
   particleCount,
   randomPositions,
-} from "../signals/state";
+} from "../signals/data";
 import { BufferAttribute } from "three";
 import { CameraControls, CameraControlsImpl } from "@react-three/drei";
 import { EventContext } from "../contexts/EventContext";
@@ -16,18 +16,23 @@ function Renderer() {
     if (!pointsRef.current) return;
     const points = pointsRef.current;
 
+    const count = particleCount.peek();
+    const imgPos = imagePositions.peek();
+    const randPos = randomPositions.peek();
+
     let pos: Float32Array = points.geometry.attributes.position.array;
 
     // Check if the position array needs to be resized
-    if (pos.length !== particleCount.value * 3) {
-      const newPos = new Float32Array(particleCount.value * 3);
+    if (pos.length !== count * 3) {
+      const newPos = new Float32Array(count * 3);
 
       // Copy the old position array to the new one, set new position as random
-      const minLength = Math.min(pos.length, newPos.length);
-      const maxLenth = Math.max(pos.length, newPos.length);
-      for (let i = 0; i < maxLenth; i++) {
-        if (i < minLength) newPos[i] = pos[i];
-        else newPos[i] = Math.random() * 2 - 1;
+      const copyLength = Math.min(pos.length, newPos.length);
+      for (let i = 0; i < copyLength; i++) {
+        newPos[i] = pos[i];
+      }
+      for (let i = copyLength; i < newPos.length; i++) {
+        newPos[i] = Math.random() * 2 - 1;
       }
 
       // points.geometry.attributes.position.array = null;
@@ -37,8 +42,6 @@ function Renderer() {
     }
 
     // Animate particles towards target position
-    const imgPos = imagePositions.value;
-    const randPos = randomPositions.value;
     const targetPos = imgPos ? imgPos : randPos;
 
     const t = Math.min(delta * 3, 0.05);
@@ -62,7 +65,7 @@ function Renderer() {
           args={[new Float32Array(new Array(256 * 256 * 3).fill(0)), 3]}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.015} color={"black"} transparent={true} />
+      <pointsMaterial size={0.01} color={"black"} transparent={true} />
     </points>
   );
 }

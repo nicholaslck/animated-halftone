@@ -2,13 +2,24 @@ import { signal, effect, computed } from "@preact/signals-react";
 import {
   asyncLoadImageData,
   downsampleImageData,
+  imageData2Points,
   readFileAsDataURL,
 } from "../utils/image";
-import floyd_steinberg from "floyd-steinberg";
+import {
+  createHalftoner,
+  type Halftoner,
+  type HalftonerID,
+} from "../algorithms";
 
 export const file = signal<File | null>(null);
 
 export const imageData = signal<ImageData | null>(null);
+
+export const algorithmId = signal<HalftonerID>("floyd-steinberg");
+
+export const algorithm = computed<Halftoner>(() =>
+  createHalftoner(algorithmId.value),
+);
 
 effect(() => {
   if (!file.value) {
@@ -24,6 +35,34 @@ effect(() => {
 });
 
 export const halftoneImage = computed(() => {
-  if (!imageData.value) return null;
-  return floyd_steinberg(imageData.value);
+  const algo = algorithm.value;
+  if (imageData.value) {
+    return algo.process(imageData.value);
+  } else {
+    return null;
+  }
+});
+
+export const imagePositions = computed(() => {
+  if (!halftoneImage.value) return null;
+  console.debug("imagePosition", halftoneImage.value.data[0]);
+  return imageData2Points(halftoneImage.value);
+});
+
+const defaultCount = 40000 as const; // 200 * 200
+export const particleCount = computed<number>(() => {
+  if (!imagePositions.value) return defaultCount;
+  return imagePositions.value.length / 3;
+});
+
+export const randomPositions = computed(() => {
+  const pos = new Float32Array(particleCount.value * 3);
+  let i3: number;
+  for (let i = 0; i < particleCount.value; i++) {
+    i3 = i * 3;
+    pos[i3] = Math.random() * 2 - 1;
+    pos[i3 + 1] = Math.random() * 2 - 1;
+    pos[i3 + 2] = Math.random() * 2 - 1;
+  }
+  return pos;
 });
