@@ -12,15 +12,24 @@ export class FloydSteinbergErrorDiffusion implements Halftoner {
   id: HalftonerID = "floyd-steinberg";
 
   process(image: ImageData): ImageData {
-    const w = image.width;
-    const h = image.height;
-    const data = new Float64Array(convertRGBAtoL(image).data);
+    // Create a deep copy of the image data to avoid mutating the original.
+    const imageCopy = new ImageData(
+      new Uint8ClampedArray(image.data),
+      image.width,
+      image.height,
+    );
+
+    console.debug("Processing Floyd-Steinberg error diffusion");
+    const w = imageCopy.width;
+    const h = imageCopy.height;
+    // Work on the copy's data.
+    const data = new Float64Array(convertRGBAtoL(imageCopy).data);
 
     let currentPixel, newPixelValue, err;
 
-    for (let y = 0; y < image.height; y++) {
-      for (let x = 0; x < image.width; x++) {
-        currentPixel = y * image.width * 4 + x * 4;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        currentPixel = y * w * 4 + x * 4;
         newPixelValue = data[currentPixel] <= 127.5 ? 0.0 : 255.0;
         err = data[currentPixel] - newPixelValue;
         data[currentPixel] = newPixelValue;
@@ -37,7 +46,8 @@ export class FloydSteinbergErrorDiffusion implements Halftoner {
       }
     }
 
-    image.data.set(new Uint8ClampedArray(data));
-    return image;
+    // Write the final data back to the copy and return it.
+    imageCopy.data.set(new Uint8ClampedArray(data));
+    return imageCopy;
   }
 }

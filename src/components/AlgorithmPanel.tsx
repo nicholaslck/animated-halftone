@@ -4,7 +4,7 @@ import AlgorithmList from "./AlgorithmList";
 type AlgorithmPanelProps = React.PropsWithChildren;
 
 function AlgorithmSidebarContent() {
-  return <AlgorithmList className="menu w-full grow" />;
+  return <AlgorithmList className="px-4 w-80 grow is-drawer-close:hidden" />;
 }
 
 function AlgorithmSidebarButton() {
@@ -40,7 +40,7 @@ function AlgorithmPanel({ children }: AlgorithmPanelProps) {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="is-drawer-close:w-14 is-drawer-open:w-64 bg-transparent flex flex-col items-start min-h-full is-drawer-open:bg-gray-50">
+        <div className="is-drawer-close:w-14 is-drawer-open:w-80 bg-transparent flex flex-col items-start min-h-full is-drawer-open:bg-gray-50 overflow-x-hidden">
           {/* button to open/close drawer */}
           <AlgorithmSidebarButton />
 

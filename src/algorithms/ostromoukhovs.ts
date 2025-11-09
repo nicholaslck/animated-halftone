@@ -1,5 +1,5 @@
 import { type Halftoner, type HalftonerID } from "./type";
-import { convertRGBAtoL } from "./utils";
+import { convertRGBAtoL, copyImage } from "./utils";
 
 export class OstromoukhovsErrorDiffusion implements Halftoner {
   id: HalftonerID = "ostromoukhov's";
@@ -12,8 +12,9 @@ export class OstromoukhovsErrorDiffusion implements Halftoner {
   }
 
   process(image: ImageData): ImageData {
-    const { width, height } = image;
-    const data = convertRGBAtoL(image).data;
+    const imageCopy = copyImage(image);
+    const { width, height } = imageCopy;
+    const data = convertRGBAtoL(imageCopy).data;
 
     const outputData = new Float64Array(data.length);
 
@@ -79,8 +80,8 @@ export class OstromoukhovsErrorDiffusion implements Halftoner {
       }
     }
 
-    image.data.set(outputData);
-    return image;
+    imageCopy.data.set(outputData);
+    return imageCopy;
   }
 }
 

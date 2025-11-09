@@ -15,3 +15,7 @@ export function convertRGBAtoL(image: ImageData) {
   image.data.set(data);
   return image;
 }
+
+export function copyImage(image: ImageData) {
+  return new ImageData(image.data.slice(), image.width, image.height);
+}
