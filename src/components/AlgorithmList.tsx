@@ -35,7 +35,6 @@ function AlgorithmItem({ id, onSelect }: AlgorithmItemProps) {
 
 function AlgorithmList({ className: _className }: AlgorithmListProps) {
   const handleAlgorithmSelected = (id: HalftonerID) => {
-    // TODO: algorithmId is not updating, investigate.
     algorithmId.value = id;
   };
 
