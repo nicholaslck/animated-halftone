@@ -1,15 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { OstromoukhovsErrorDiffusion } from "../../src/algorithms/halftoners/ostromoukhovs";
+import { Threshold } from "../../src/algorithms/halftoners/threshold";
 import { loadImageData, writeImage } from "../utils/image";
 import pixelmatch from "pixelmatch";
 
-describe("Ostromoukhovs", () => {
+describe("Threshold", () => {
   it("should process an image", async () => {
     const input = await loadImageData("test/imgs/david.png");
-    const expected = await loadImageData("test/imgs/david-ov.png");
+    const expected = await loadImageData("test/imgs/david-threshold.png");
 
-    const result = new OstromoukhovsErrorDiffusion().process(input);
-    await writeImage(result, "test/imgs/results/david-ov.png");
+    const result = new Threshold().process(input);
+    await writeImage(result, "test/imgs/results/david-threshold.png");
 
     expect(result.width).toEqual(expected.width);
     expect(result.height).toEqual(expected.height);
@@ -19,8 +19,8 @@ describe("Ostromoukhovs", () => {
         expected.data,
         undefined,
         input.width,
-        input.height,
-      ),
+        input.height
+      )
     ).toEqual(0);
   });
 });

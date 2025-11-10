@@ -1,4 +1,8 @@
-export const HalftonerIDs = ["floyd-steinberg", "ostromoukhov's"] as const;
+export const HalftonerIDs = [
+  "floyd-steinberg",
+  "ostromoukhov's",
+  "threshold",
+] as const;
 
 export type HalftonerID = (typeof HalftonerIDs)[number];
 

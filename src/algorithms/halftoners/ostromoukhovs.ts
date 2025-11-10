@@ -1,5 +1,5 @@
-import { type Halftoner, type HalftonerID } from "./type";
-import { convertRGBAtoL, copyImage } from "./utils";
+import { type Halftoner, type HalftonerID } from "../type";
+import { convertRGBAtoL, copyImage } from "../utils";
 
 export class OstromoukhovsErrorDiffusion implements Halftoner {
   id: HalftonerID = "ostromoukhov's";
