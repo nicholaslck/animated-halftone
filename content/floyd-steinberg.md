@@ -1,10 +1,10 @@
-Here’s the Floyd–Steinberg dithering history and math, cleanly formatted in markdown.
+# Floyd–Steinberg Error Diffusion dithering
 
 ## Background
 
 Halftoning renders continuous tones with discrete dots. Early digital printers and displays often had 1‑bit output, so arranging black/white pixels to approximate grayscale was crucial. In 1976, Robert Floyd and Louis Steinberg introduced error diffusion: quantize each pixel, compute its error, and distribute that error forward to neighbors. This produced fine, blue‑noise‑like textures, preserved edges, and avoided large‑scale bias compared to fixed thresholds. Their method became the standard, inspiring variants like Jarvis–Judice–Ninke, Stucki, Burkes, and serpentine scanning, plus multi‑level and color extensions.
 
-## Mathematical expression
+## Formulation
 
 Let $x[i, j]$ be the input intensity. For a RGB image, usually the pixel ranges from 0-255. To simplify the math, we normalize the pixel values from 0-255 to 0–1.
 
@@ -29,6 +29,8 @@ $$
 
 \end{bmatrix}
 $$
+
+![diffusion direction](/animated-halftone/fs-diffuse-direction.png)
 
 Binary quantization and error:
 

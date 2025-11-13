@@ -7,7 +7,7 @@ import { algorithm } from "./signals/data";
 
 function Title() {
   return (
-    <h1 className="fixed top-4 right-4 text-black z-10 text-lg text-nowrap">
+    <h1 className="fixed top-4 right-4 z-10 text-lg text-nowrap bg-neutral text-neutral-50 py-2 px-4 rounded-full">
       {algorithm.value.name}
     </h1>
   );

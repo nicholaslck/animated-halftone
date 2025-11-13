@@ -1,5 +1,7 @@
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import AlgorithmList from "./AlgorithmList";
+import AlgorithmDescription from "./AlgorithmDescription";
+import { isAlgorithmDescriptionSidebarOpen } from "../signals/ui";
 
 type AlgorithmPanelProps = React.PropsWithChildren;
 
@@ -27,6 +29,33 @@ function AlgorithmSidebarButton() {
   );
 }
 
+function AlgorithmDescriptionSidebar() {
+  const isOpen = isAlgorithmDescriptionSidebarOpen.value;
+
+  return (
+    <div
+      className={
+        "is-drawer-close:hidden w-0 bg-gray-50 text-black flex flex-col max-h-dvh" +
+        (isOpen ? " w-120" : "")
+      }
+    >
+      <div className="flex flex-row-reverse">
+        <button
+          className={
+            "btn btn-neutral btn-circle m-4" + (isOpen ? "" : " hidden")
+          }
+          aria-label="close"
+          onClick={() => (isAlgorithmDescriptionSidebarOpen.value = false)}
+        >
+          <X size={16} />
+        </button>
+      </div>
+
+      <AlgorithmDescription />
+    </div>
+  );
+}
+
 function AlgorithmPanel({ children }: AlgorithmPanelProps) {
   return (
     <div className="drawer drawer-open">
@@ -34,7 +63,7 @@ function AlgorithmPanel({ children }: AlgorithmPanelProps) {
       {/* page content */}
       <div className="drawer-content fixed top-0 left-0 w-dvw">{children}</div>
 
-      <div className="drawer-side is-drawer-open:shadow-2xl">
+      <div className="drawer-side is-drawer-open:shadow-2xl relative flex overflow-y-hidden">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
@@ -47,6 +76,7 @@ function AlgorithmPanel({ children }: AlgorithmPanelProps) {
           {/* sidebar content */}
           <AlgorithmSidebarContent />
         </div>
+        <AlgorithmDescriptionSidebar />
       </div>
     </div>
   );
