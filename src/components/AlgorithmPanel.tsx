@@ -35,7 +35,7 @@ function AlgorithmDescriptionSidebar() {
   return (
     <div
       className={
-        "is-drawer-close:hidden w-0 bg-gray-50 text-black flex flex-col max-h-dvh" +
+        "hidden is-drawer-close:hidden w-0 bg-gray-50 text-black md:flex flex-col max-h-dvh" +
         (isOpen ? " w-120" : "")
       }
     >
@@ -56,6 +56,33 @@ function AlgorithmDescriptionSidebar() {
   );
 }
 
+function AlgorithmDescriptionDialog() {
+  const isOpen = isAlgorithmDescriptionSidebarOpen.value;
+
+  return (
+    <dialog
+      className={
+        "md:hidden modal modal-bottom sm:modal-middle bg-gray-50 text-black" +
+        (isOpen ? " modal-open" : "")
+      }
+    >
+      <div className="modal-box p-0 max-h-dvh">
+        <div className="sticky top-0 flex flex-row-reverse pe-8 pt-4">
+          <button
+            className="btn btn-neutral btn-circle"
+            aria-label="close"
+            onClick={() => (isAlgorithmDescriptionSidebarOpen.value = false)}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <AlgorithmDescription />
+      </div>
+    </dialog>
+  );
+}
+
 function AlgorithmPanel({ children }: AlgorithmPanelProps) {
   return (
     <div className="drawer drawer-open">
@@ -69,7 +96,7 @@ function AlgorithmPanel({ children }: AlgorithmPanelProps) {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="is-drawer-close:w-14 is-drawer-open:w-80 bg-transparent flex flex-col items-start min-h-full is-drawer-open:bg-gray-50 overflow-x-hidden">
+        <div className="pt-16 md:pt-0 is-drawer-close:w-14 is-drawer-open:w-80 bg-transparent flex flex-col items-start min-h-full is-drawer-open:bg-gray-50 overflow-x-hidden">
           {/* button to open/close drawer */}
           <AlgorithmSidebarButton />
 
@@ -77,6 +104,7 @@ function AlgorithmPanel({ children }: AlgorithmPanelProps) {
           <AlgorithmSidebarContent />
         </div>
         <AlgorithmDescriptionSidebar />
+        <AlgorithmDescriptionDialog />
       </div>
     </div>
   );
