@@ -10,6 +10,7 @@ import {
   type Halftoner,
   type HalftonerID,
 } from "../algorithms";
+import { algoDescriptions, type AlgorithmDescriptions } from "../../.velite";
 
 export const file = signal<File | null>(null);
 
@@ -18,7 +19,7 @@ export const imageData = signal<ImageData | null>(null);
 export const algorithmId = signal<HalftonerID>("floyd-steinberg");
 
 export const algorithm = computed<Halftoner>(() =>
-  createHalftoner(algorithmId.value),
+  createHalftoner(algorithmId.value)
 );
 
 effect(() => {
@@ -66,3 +67,22 @@ export const randomPositions = computed(() => {
   }
   return pos;
 });
+
+export const currentAlgorithmIdForDescription =
+  signal<HalftonerID>("floyd-steinberg");
+
+export const currentAlgorithmDescription =
+  computed<AlgorithmDescriptions | null>(() => {
+    switch (currentAlgorithmIdForDescription.value) {
+      case "floyd-steinberg":
+        return algoDescriptions.find((algo) => algo.slug === "floyd-steinberg");
+      case "ostromoukhov's":
+        return algoDescriptions.find((algo) => algo.slug === "ostromoukhovs");
+      case "threshold":
+        return algoDescriptions.find((algo) => algo.slug === "threshold");
+      default:
+        return null;
+    }
+  });
+
+effect(() => console.table(currentAlgorithmDescription.value));

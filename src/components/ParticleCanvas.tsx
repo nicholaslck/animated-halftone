@@ -65,7 +65,7 @@ function Renderer() {
           args={[new Float32Array(new Array(256 * 256 * 3).fill(0)), 3]}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.01} color={"black"} transparent={true} />
+      <pointsMaterial size={0.014} color={"black"} transparent={true} />
     </points>
   );
 }

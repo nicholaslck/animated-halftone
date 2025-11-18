@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { FloydSteinbergErrorDiffusion } from "../../src/algorithms/floyd-steinberg";
+import { FloydSteinbergErrorDiffusion } from "../../src/algorithms/halftoners/floyd-steinberg";
 import { loadImageData, writeImage } from "../utils/image";
 import pixelmatch from "pixelmatch";
 
@@ -19,8 +19,8 @@ describe("FloydSteinbergErrorDiffusion", () => {
         expected.data,
         undefined,
         input.width,
-        input.height,
-      ),
+        input.height
+      )
     ).toEqual(0);
   });
 });

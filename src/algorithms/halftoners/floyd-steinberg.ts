@@ -1,5 +1,5 @@
-import { type Halftoner, type HalftonerID } from "./type";
-import { convertRGBAtoL, copyImage } from "./utils";
+import { type Halftoner, type HalftonerID } from "../type";
+import { convertRGBAtoL, copyImage } from "../utils";
 
 const kernel = [
   [1, 0, 7 / 16],
@@ -16,7 +16,6 @@ export class FloydSteinbergErrorDiffusion implements Halftoner {
     // Create a deep copy of the image data to avoid mutating the original.
     const imageCopy = copyImage(image);
 
-    console.debug("Processing Floyd-Steinberg error diffusion");
     const w = imageCopy.width;
     const h = imageCopy.height;
     // Work on the copy's data.

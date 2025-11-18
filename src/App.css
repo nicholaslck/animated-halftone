@@ -4,3 +4,4 @@
     bumblebee --default,
     bumblebee --prefersdark;
 }
+@plugin "@tailwindcss/typography";
