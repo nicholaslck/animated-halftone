@@ -30,11 +30,14 @@ function AlgorithmItem({
       </button>
 
       {algorithmId.value === id ? (
-        <button className="btn btn-sm btn-outline border-none bg-success text-success-content">
+        <button className="btn btn-sm btn-outline border-none bg-success text-success-content w-16">
           <CheckCircle size={22} />
         </button>
       ) : (
-        <button className="btn btn-sm btn-outline" onClick={() => onSelect(id)}>
+        <button
+          className="btn btn-sm btn-outline w-16"
+          onClick={() => onSelect(id)}
+        >
           Apply
         </button>
       )}
